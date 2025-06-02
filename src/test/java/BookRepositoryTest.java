@@ -1,0 +1,104 @@
+import javafx.collections.FXCollections;
+import javafx.scene.control.*;
+import org.example.controller.LibraryController;
+import org.example.model.Book;
+import org.example.model.BookRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class BookRepositoryTest {
+    private LibraryController controller;
+    private BookRepository mockRepo;
+
+    @BeforeEach
+    public void setUp() {
+        controller = new LibraryController();
+
+        // Mock GUI elemek
+        controller.titleField = new TextField();
+        controller.authorField = new TextField();
+        controller.isbnField = new TextField();
+        controller.genreComboBox = new ComboBox<>();
+        controller.bookList = new ListView<>();
+        controller.addButton = new Button();
+
+        controller.repo = new BookRepository(); // igazi repo, vagy mockolhatod
+
+        // Feltöltés néhány műfajjal
+        controller.genreComboBox.setItems(FXCollections.observableArrayList(
+                "Regény", "Krimi", "Fantasy"
+        ));
+    }
+
+    @Test
+    public void testAddBookSuccessfully() {
+        controller.titleField.setText("1984");
+        controller.authorField.setText("George Orwell");
+        controller.isbnField.setText("1234567890");
+        controller.genreComboBox.setValue("Regény");
+
+        controller.onAdd();
+
+        List<Book> books = controller.repo.getBooks();
+        assertEquals(1, books.size());
+        assertEquals("1984", books.get(0).getTitle());
+    }
+
+    @Test
+    public void testAddBookFailsOnMissingField() {
+        controller.titleField.setText("1984");
+        controller.authorField.setText("");  // Missing author
+        controller.isbnField.setText("1234567890");
+        controller.genreComboBox.setValue("Regény");
+
+        controller.onAdd();
+
+        List<Book> books = controller.repo.getBooks();
+        assertTrue(books.isEmpty(), "A könyv nem kerülhet be, ha hiányzik mező.");
+    }
+
+    @Test
+    public void testDuplicateIsbnIsRejected() {
+        controller.repo.addBook(new Book("Book A", "Author A", "Regény", "1111"));
+
+        controller.titleField.setText("Book B");
+        controller.authorField.setText("Author B");
+        controller.isbnField.setText("1111"); // Same ISBN
+        controller.genreComboBox.setValue("Regény");
+
+        controller.onAdd();
+
+        assertEquals(1, controller.repo.getBooks().size(), "Ne engedjen be duplikált ISBN-t.");
+    }
+
+    @Test
+    public void testDeleteBookRemovesFromRepo() {
+        Book book = new Book("Book A", "Author A", "Krimi", "5555");
+        controller.repo.addBook(book);
+        controller.refreshList();
+
+        controller.bookList.getSelectionModel().select(book);
+        controller.onDelete();
+
+        assertFalse(controller.repo.getBooks().contains(book));
+    }
+
+    @Test
+    public void testEditBookUpdatesFields() {
+        Book book = new Book("Old", "Writer", "Fantasy", "111");
+        controller.repo.addBook(book);
+        controller.refreshList();
+
+        controller.bookList.getSelectionModel().select(book);
+        controller.onEdit();
+
+        controller.titleField.setText("New Title");
+        controller.onSaveEdit(book);
+
+        assertEquals("New Title", book.getTitle());
+    }
+}

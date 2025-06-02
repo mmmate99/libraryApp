@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.controller.LibraryController">
+    <top>
+        <VBox spacing="10">
+            <TitledPane text="📚 Új könyv hozzáadása" expanded="true">
+                <VBox spacing="5" >
+                    <HBox spacing="10">
+                        <TextField fx:id="titleField" promptText="Cím"/>
+                        <TextField fx:id="authorField" promptText="Szerző" />
+                        <TextField fx:id="isbnField" promptText="IsbnSzam" />
+                        <ComboBox fx:id="genreComboBox" promptText="Zsáner megjelölés"/>
+                    </HBox>
+                    <HBox spacing="10">
+                        <Button fx:id="addButton" text="Könyv hozzáadása" onAction="#onAdd" />
+                        <Button fx:id="exportButton" text="Lista export" onAction="#onExportPdf" />
+                        <ComboBox fx:id="filterComboBox" promptText="Szűrés" onAction="#onFilter">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Összes könyv"/>
+                                    <String fx:value="Csak elérhető"/>
+                                    <String fx:value="Csak kölcsönzött"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                        <ComboBox fx:id="sortComboBox" promptText="Rendezés" onAction="#onSort">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Cím szerint (A-Z)"/>
+                                    <String fx:value="Cím szerint (Z-A)"/>
+                                    <String fx:value="Szerző szerint (A-Z)"/>
+                                    <String fx:value="Szerző szerint (Z-A)"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                        <ComboBox fx:id="genreFilterComboBox" onAction="#onGenreFilter" promptText="Zsáner szűrés"/>
+                    </HBox>
+                </VBox>
+            </TitledPane>
+        </VBox>
+    </top>
+
+    <center>
+        <ListView fx:id="bookList" VBox.vgrow="ALWAYS"/>
+    </center>
+
+    <bottom>
+        <HBox spacing="5">
+            <TextField fx:id="searchTitleField" promptText="Cím keresés" />
+            <TextField fx:id="searchAuthorField" promptText="Szerző keresés"/>
+            <TextField fx:id="searchIsbnField" promptText="Isbn Keresés" />
+            <Button text="Keresés" onAction="#onSearch"/>
+            <Button fx:id="resetButton" text="Visszalépés" onAction="#onResetSearch" visible="false"/>
+            <Button fx:id="deleteButton" text="Törlés" onAction="#onDelete"/>
+            <Button fx:id="editButton" text="Szerkesztés" onAction="#onEdit"/>
+            <Button fx:id="saveButton" text="Mentés" onAction="#onSave"/>
+            <Button text="Kölcsönzés/Visszavétel" onAction="#onToggleBorrowed"/>
+        </HBox>
+    </bottom>
+</BorderPane>

@@ -1,0 +1,45 @@
+[ {
+  "title" : "t",
+  "author" : "a",
+  "genre" : "Tudományos",
+  "borrowedBy" : null,
+  "borrowedDate" : null,
+  "returnedDate" : "2025-06-02",
+  "isbn" : "232",
+  "dueDate" : null,
+  "borrowed" : false,
+  "daysLate" : 0
+}, {
+  "title" : "dada",
+  "author" : "s",
+  "genre" : "Tudományos",
+  "borrowedBy" : null,
+  "borrowedDate" : null,
+  "returnedDate" : null,
+  "isbn" : "1212",
+  "dueDate" : null,
+  "borrowed" : false,
+  "daysLate" : 0
+}, {
+  "title" : "21",
+  "author" : "Asd",
+  "genre" : "Életrajz",
+  "borrowedBy" : "Dane",
+  "borrowedDate" : "2025-06-02",
+  "returnedDate" : null,
+  "isbn" : "121211",
+  "dueDate" : "2025-06-16",
+  "borrowed" : true,
+  "daysLate" : 0
+}, {
+  "title" : "Könyv",
+  "author" : "Dubai",
+  "genre" : "Regény",
+  "borrowedBy" : null,
+  "borrowedDate" : null,
+  "returnedDate" : null,
+  "isbn" : "000000",
+  "dueDate" : null,
+  "borrowed" : false,
+  "daysLate" : 0
+} ]
