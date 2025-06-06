@@ -9,8 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BookRepositoryTest {
     private LibraryController controller;
@@ -141,5 +144,64 @@ public class BookRepositoryTest {
 
         List<Book> displayedBooks = controller.bookList.getItems();
         assertEquals(2, displayedBooks.size());
+    }
+
+    @Test
+    public void testToggleBorrowedSetsBorrowedFields() {
+        Book book = new Book("Test könyv", "Teszt Elek", "Regény", "1234");
+        controller.repo.addBook(book);
+        controller.refreshList();
+
+        controller.bookList.getSelectionModel().select(book);
+
+        LibraryController testController = new LibraryController() {
+            @Override
+            protected TextInputDialog createNameInputDialog() {
+                TextInputDialog mockDialog = mock(TextInputDialog.class);
+                when(mockDialog.showAndWait()).thenReturn(Optional.of("Teszt Olvasó"));
+                return mockDialog;
+            }
+
+            @Override
+            public void refreshList() {}
+        };
+
+        testController.bookList = controller.bookList;
+
+        testController.repo = controller.repo;
+
+        testController.onToggleBorrowed();
+
+        assertTrue(book.isBorrowed());
+        assertEquals("Teszt Olvasó", book.getBorrowedBy());
+        assertNotNull(book.getBorrowedDate());
+        assertNotNull(book.getDueDate());
+    }
+
+    @Test
+    public void testSortByTitleAscending() {
+        Book bookA = new Book("A könyv", "Zsuzsa", "Regény", "001");
+        Book bookC = new Book("C könyv", "Árpád", "Regény", "003");
+        Book bookB = new Book("B könyv", "Béla", "Regény", "002");
+
+        controller.repo.addBook(bookA);
+        controller.repo.addBook(bookC);
+        controller.repo.addBook(bookB);
+
+        controller.bookList.setItems(FXCollections.observableArrayList(controller.repo.getBooks()));
+
+        controller.sortComboBox = new ComboBox<>();
+        controller.sortComboBox.setItems(FXCollections.observableArrayList(
+                "Cím szerint (A-Z)", "Cím szerint (Z-A)",
+                "Szerző szerint (A-Z)", "Szerző szerint (Z-A)"
+        ));
+        controller.sortComboBox.setValue("Cím szerint (A-Z)");
+
+        controller.onSort();
+
+        List<Book> sorted = controller.bookList.getItems();
+        assertEquals("A könyv", sorted.get(0).getTitle());
+        assertEquals("B könyv", sorted.get(1).getTitle());
+        assertEquals("C könyv", sorted.get(2).getTitle());
     }
 }

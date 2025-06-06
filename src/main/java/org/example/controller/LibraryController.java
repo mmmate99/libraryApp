@@ -7,39 +7,23 @@ import javafx.scene.control.*;
 import org.example.model.Book;
 import org.example.model.BookRepository;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class LibraryController {
     @FXML
-    public TextField titleField;
+    public TextField titleField, authorField, isbnField, searchTitleField, searchAuthorField;
     @FXML
-    public TextField authorField;
+    private TextField searchIsbnField;
     @FXML
-    public TextField isbnField;
-    @FXML
-    public TextField searchTitleField;
-    @FXML
-    public TextField searchAuthorField;
-    @FXML private TextField searchIsbnField;
-    @FXML
-    public Button addButton;
-    @FXML private Button deleteButton;
-    @FXML private Button editButton;
-    @FXML private Button saveButton;
-    @FXML private Button resetButton;
-    @FXML private Button exportButton;
+    public Button addButton, deleteButton, editButton, saveButton, resetButton, exportButton;
     @FXML
     public ListView<Book> bookList;
     @FXML
-    public ComboBox<String> filterComboBox;
-    @FXML private ComboBox<String> sortComboBox;
-    @FXML
-    public ComboBox<String> genreFilterComboBox;
-    @FXML
-    public ComboBox<String> genreComboBox;
-    private boolean isModified = false;
+    public ComboBox<String> filterComboBox, sortComboBox, genreFilterComboBox, genreComboBox;
 
+    private boolean isModified = false;
     private boolean suppressComboBoxEvents = false;
 
     public BookRepository repo= new BookRepository();
@@ -257,6 +241,47 @@ public class LibraryController {
 
         refreshList();
     }
+
+    /*protected TextInputDialog createNameInputDialog() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Kölcsönözés");
+        dialog.setHeaderText("Add meg a kölcsönző nevét!");
+        dialog.setContentText("Név:");
+        return dialog;
+    }
+
+    @FXML
+    public void onToggleBorrowed() {
+        Book selected = bookList.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("Nincs kijelölés", "Válassz ki egy könyvet a kölcsönzéshez!");
+            return;
+        }
+
+        if (!selected.isBorrowed()) {
+            TextInputDialog dialog = createNameInputDialog();  // <-- itt hívjuk meg a kiszervezett metódust
+
+            dialog.showAndWait().ifPresent(name -> {
+                selected.setBorrowed(true);
+                selected.setBorrowedBy(name);
+                selected.setBorrowedDate(LocalDate.now().toString());
+                selected.setDueDate(LocalDate.now().plusDays(14).toString());
+                selected.setReturnedDate(null);
+            });
+        } else {
+            selected.setBorrowed(false);
+            selected.setReturnedDate(LocalDate.now().toString());
+            long daysLate = selected.getDaysLate();
+            if (daysLate > 0) {
+                showAlert("Késés", "A könyv " + daysLate + " nappal később lett visszahozva.");
+            }
+            selected.setBorrowedBy(null);
+            selected.setBorrowedDate(null);
+            selected.setDueDate(null);
+        }
+
+        refreshList();
+    }*/
 
     @FXML
     public void onGenreFilter() {
