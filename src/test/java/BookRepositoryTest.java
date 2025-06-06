@@ -33,6 +33,8 @@ public class BookRepositoryTest {
         controller.bookList = new ListView<>();
         controller.addButton = new Button();
 
+        controller.filterComboBox = controller.genreFilterComboBox;
+
         controller.repo = new BookRepository();
 
         controller.genreComboBox.setItems(FXCollections.observableArrayList(
@@ -106,5 +108,38 @@ public class BookRepositoryTest {
         controller.onSaveEdit(book);
 
         assertEquals("New Title", book.getTitle());
+    }
+
+    @Test
+    public void testGenreFilterShowsCorrectBooks() {
+        Book fantasyBook = new Book("Book A", "Author A", "Fantasy", "001");
+        Book crimeBook = new Book("Book B", "Author B", "Krimi", "002");
+        controller.repo.addBook(fantasyBook);
+        controller.repo.addBook(crimeBook);
+
+        controller.genreFilterComboBox.setItems(FXCollections.observableArrayList("Regény", "Krimi", "Fantasy"));
+        controller.genreFilterComboBox.setValue("Fantasy");
+        controller.onGenreFilter();
+
+        List<Book> displayedBooks = controller.bookList.getItems();
+        assertEquals(1, displayedBooks.size());
+        assertEquals("Fantasy", displayedBooks.get(0).getGenre());
+    }
+
+    @Test
+    public void testEditBookWithNoSelectionDoesNothing() {
+        assertDoesNotThrow(() -> controller.onEdit());
+    }
+
+    @Test
+    public void testClearFilterShowsAllBooks() {
+        controller.repo.addBook(new Book("Book A", "Author A", "Fantasy", "001"));
+        controller.repo.addBook(new Book("Book B", "Author B", "Krimi", "002"));
+
+        controller.genreFilterComboBox.setValue(null); // no filter
+        controller.onFilter();
+
+        List<Book> displayedBooks = controller.bookList.getItems();
+        assertEquals(2, displayedBooks.size());
     }
 }

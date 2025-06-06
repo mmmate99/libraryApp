@@ -31,7 +31,8 @@ public class LibraryController {
     @FXML private Button exportButton;
     @FXML
     public ListView<Book> bookList;
-    @FXML private ComboBox<String> filterComboBox;
+    @FXML
+    public ComboBox<String> filterComboBox;
     @FXML private ComboBox<String> sortComboBox;
     @FXML
     public ComboBox<String> genreFilterComboBox;
