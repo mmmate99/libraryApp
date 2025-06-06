@@ -206,7 +206,7 @@ public class LibraryController {
     }
 
 
-    @FXML
+    /*@FXML
     public void onToggleBorrowed(){
         Book selected = bookList.getSelectionModel().getSelectedItem();
         if (selected == null) {
@@ -240,9 +240,9 @@ public class LibraryController {
         }
 
         refreshList();
-    }
+    }*/
 
-    /*protected TextInputDialog createNameInputDialog() {
+    protected TextInputDialog createNameInputDialog() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Kölcsönözés");
         dialog.setHeaderText("Add meg a kölcsönző nevét!");
@@ -281,7 +281,7 @@ public class LibraryController {
         }
 
         refreshList();
-    }*/
+    }
 
     @FXML
     public void onGenreFilter() {
