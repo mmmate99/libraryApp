@@ -1,10 +1,10 @@
 [ {
   "title" : "t",
-  "author" : "a",
+  "author" : "dd",
   "genre" : "Tudományos",
   "borrowedBy" : null,
   "borrowedDate" : null,
-  "returnedDate" : "2025-06-02",
+  "returnedDate" : "2025-06-06",
   "isbn" : "232",
   "dueDate" : null,
   "borrowed" : false,

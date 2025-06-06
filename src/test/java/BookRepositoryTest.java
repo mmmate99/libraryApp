@@ -1,8 +1,10 @@
 import javafx.collections.FXCollections;
+import javafx.embed.swing.JFXPanel;
 import javafx.scene.control.*;
 import org.example.controller.LibraryController;
 import org.example.model.Book;
 import org.example.model.BookRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,23 +14,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BookRepositoryTest {
     private LibraryController controller;
-    private BookRepository mockRepo;
+
+
+    @BeforeAll
+    public static void initToolkit() {
+        new JFXPanel();
+    }
 
     @BeforeEach
     public void setUp() {
         controller = new LibraryController();
 
-        // Mock GUI elemek
         controller.titleField = new TextField();
         controller.authorField = new TextField();
         controller.isbnField = new TextField();
         controller.genreComboBox = new ComboBox<>();
+        controller.genreFilterComboBox = new ComboBox<>();
         controller.bookList = new ListView<>();
         controller.addButton = new Button();
 
-        controller.repo = new BookRepository(); // igazi repo, vagy mockolhatod
+        controller.repo = new BookRepository();
 
-        // Feltöltés néhány műfajjal
         controller.genreComboBox.setItems(FXCollections.observableArrayList(
                 "Regény", "Krimi", "Fantasy"
         ));

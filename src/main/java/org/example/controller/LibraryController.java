@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -32,7 +33,8 @@ public class LibraryController {
     public ListView<Book> bookList;
     @FXML private ComboBox<String> filterComboBox;
     @FXML private ComboBox<String> sortComboBox;
-    @FXML private ComboBox<String> genreFilterComboBox;
+    @FXML
+    public ComboBox<String> genreFilterComboBox;
     @FXML
     public ComboBox<String> genreComboBox;
     private boolean isModified = false;
@@ -329,9 +331,12 @@ public class LibraryController {
     }
 
     private void showAlert(String title, String msg){
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(title);
-        alert.setContentText(msg);
-        alert.showAndWait();
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(msg);
+            alert.showAndWait();
+        });
     }
 }
